@@ -28,6 +28,9 @@ public class CustomView extends View {
     private int mSquareColor;
     private int mSquareSize;
 
+    //Circle
+    private Paint mPaintCircle;
+
     public CustomView(Context context) {
         super(context);
 
@@ -62,6 +65,10 @@ public class CustomView extends View {
         //Define color for our square
         //mPaintSquare.setColor(Color.GREEN);
 
+        mPaintCircle = new Paint();
+        mPaintCircle.setAntiAlias(true);
+        mPaintCircle.setColor(Color.parseColor("#00ccff")); //parse it to the int
+
         //Rect holds integer values
         //Rect holds decimal (float) values
 
@@ -79,7 +86,7 @@ public class CustomView extends View {
         mSquareColor = ta.getColor(R.styleable.CustomView_square_color, Color.GREEN); //Default value GREEN
 
         //square_size attribute
-        mSquareSize = ta.getDimensionPixelSize(R.styleable.CustomView_square_size, SQUARE_SIZE_DEF); //Default Size
+        mSquareSize = ta.getDimensionPixelSize(R.styleable.CustomView_square_size, SQUARE_SIZE_DEF); //Default Size 200dp
 
         //According to the attributes defined in xml
         mPaintSquare.setColor(mSquareColor);
@@ -127,5 +134,15 @@ public class CustomView extends View {
 
         //To draw rectangle
         canvas.drawRect(mRectSquare, mPaintSquare);
+
+        float cx, cy;
+        float radius = 100f;
+
+             //canvas   - radius - padding
+        cx = getWidth() - radius - 50f;
+        cy = mRectSquare.top +  (mRectSquare.height() / 2);
+
+        //To draw circle
+        canvas.drawCircle(cx, cy, radius, mPaintCircle);
     }
 }
