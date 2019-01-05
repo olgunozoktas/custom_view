@@ -1,6 +1,7 @@
 package com.example.olgun.customviews.Views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,8 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.example.olgun.customviews.R;
 
 
 /*
@@ -17,10 +20,13 @@ import android.view.View;
 public class CustomView extends View {
 
     //Constant Values
-    private static final int SQUARE_SIZE = 200;
+    private static final int SQUARE_SIZE_DEF = 200;
     private Rect mRectSquare;
     private Paint mPaintSquare;
 
+    //Obtain those attributes
+    private int mSquareColor;
+    private int mSquareSize;
 
     public CustomView(Context context) {
         super(context);
@@ -54,15 +60,37 @@ public class CustomView extends View {
         mRectSquare = new Rect();
         mPaintSquare = new Paint(Paint.ANTI_ALIAS_FLAG); //To make sure that it is more blurr and User friendly
         //Define color for our square
-        mPaintSquare.setColor(Color.GREEN);
+        //mPaintSquare.setColor(Color.GREEN);
 
         //Rect holds integer values
         //Rect holds decimal (float) values
+
+        if(set == null)
+            return;
+
+
+        //To be able to use custom attributes over the xml
+        //Do not forget to the create attrs.xml file
+
+        //This holds the attributes
+        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.CustomView);
+
+        //square_color attribute
+        mSquareColor = ta.getColor(R.styleable.CustomView_square_color, Color.GREEN); //Default value GREEN
+
+        //square_size attribute
+        mSquareSize = ta.getDimensionPixelSize(R.styleable.CustomView_square_size, SQUARE_SIZE_DEF); //Default Size
+
+        //According to the attributes defined in xml
+        mPaintSquare.setColor(mSquareColor);
+
+
+        ta.recycle();
     }
 
     //Change the color of the button to the sent color
     public void swapColor(int color) {
-        mPaintSquare.setColor(mPaintSquare.getColor() == Color.GREEN ? Color.RED : color);
+        mPaintSquare.setColor(mPaintSquare.getColor() == mSquareColor ? Color.RED : mSquareColor);
 
         //If we do not add the following functions the changes will not be affected to the view
         //Because the view already has been drawed before,
@@ -94,8 +122,8 @@ public class CustomView extends View {
         //To define the square position, size and color
         mRectSquare.left = 50;
         mRectSquare.top = 50;
-        mRectSquare.right = mRectSquare.left + SQUARE_SIZE;
-        mRectSquare.bottom = mRectSquare.top + SQUARE_SIZE;
+        mRectSquare.right = mRectSquare.left + mSquareSize;
+        mRectSquare.bottom = mRectSquare.top + mSquareSize;
 
         //To draw rectangle
         canvas.drawRect(mRectSquare, mPaintSquare);
