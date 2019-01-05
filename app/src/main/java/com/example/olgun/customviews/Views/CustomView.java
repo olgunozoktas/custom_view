@@ -17,7 +17,7 @@ import android.view.View;
 public class CustomView extends View {
 
     //Constant Values
-    private static final int SQUARE_SIZE = 100;
+    private static final int SQUARE_SIZE = 200;
     private Rect mRectSquare;
     private Paint mPaintSquare;
 
@@ -52,10 +52,35 @@ public class CustomView extends View {
         //Then again and again those objects will be created again and again
         //So best way to create them in this initView method
         mRectSquare = new Rect();
-        mPaintSquare = new Paint();
+        mPaintSquare = new Paint(Paint.ANTI_ALIAS_FLAG); //To make sure that it is more blurr and User friendly
+        //Define color for our square
+        mPaintSquare.setColor(Color.GREEN);
 
         //Rect holds integer values
         //Rect holds decimal (float) values
+    }
+
+    //Change the color of the button to the sent color
+    public void swapColor(int color) {
+        mPaintSquare.setColor(mPaintSquare.getColor() == Color.GREEN ? Color.RED : color);
+
+        //If we do not add the following functions the changes will not be affected to the view
+        //Because the view already has been drawed before,
+        //To affect those changes we have to call onDraw() method again
+        //But it is possible to call it directly
+        //Instead we can use two other built-in functions like
+        //invalidate() and postInvalidate()
+
+        //invalidate() function is work as synchronously
+        //This might block the UI if you are doing lots of things because it will try to draw UI directly
+        //Like in games, it is useful
+
+        //postInvalidate() asynchronously
+        //This won't block your UI because it will draw the view whenever it can (not directly)
+
+        //Most recommended way is to use postInvalidate()
+
+        postInvalidate();
     }
 
     //After making modifications, have to rebuild the system
@@ -67,13 +92,10 @@ public class CustomView extends View {
         //canvas.drawColor(Color.RED);
 
         //To define the square position, size and color
-        mRectSquare.left = 10;
-        mRectSquare.top = 10;
+        mRectSquare.left = 50;
+        mRectSquare.top = 50;
         mRectSquare.right = mRectSquare.left + SQUARE_SIZE;
         mRectSquare.bottom = mRectSquare.top + SQUARE_SIZE;
-
-        //Define color for our square
-        mPaintSquare.setColor(Color.GREEN);
 
         //To draw rectangle
         canvas.drawRect(mRectSquare, mPaintSquare);
