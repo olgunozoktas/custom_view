@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:square_color="@color/squareColor"
-        app:square_size="100dp"/>
+        app:square_size="50dp"/>
 
     <Button
         android:layout_below="@id/customView"
